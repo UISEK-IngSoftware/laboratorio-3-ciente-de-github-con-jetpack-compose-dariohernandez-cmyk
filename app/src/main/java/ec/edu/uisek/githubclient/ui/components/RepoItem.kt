@@ -1,13 +1,6 @@
 package ec.edu.uisek.githubclient.ui.components
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -18,78 +11,90 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-
+import coil.compose.AsyncImage
+import ec.edu.uisek.githubclient.models.Repository
+import ec.edu.uisek.githubclient.models.GithubUser
 
 @Composable
-fun RepoItem(
-    name: String,
-    description: String,
-    avatarImg: String,
-    language: String
-) {
+fun RepoItem(repository: Repository) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(all = 8.dp)
+            .padding(8.dp)
     ) {
         Row(
             modifier = Modifier
-                .padding(all = 16.dp)
+                .padding(16.dp)
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
             AsyncImage(
-                model = avatarImg,
-                contentDescription = "Imagen de $name",
+                model = repository.owner.avatarUrl,
+                contentDescription = "Imagen de ${repository.name}",
                 modifier = Modifier.size(60.dp),
                 contentScale = ContentScale.Crop
             )
 
             Spacer(modifier = Modifier.width(16.dp))
 
-            Column(modifier = Modifier.weight(1f)) {
+            Column {
                 Text(
-                    text = name,
+                    text = repository.name,
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold
                 )
 
                 Spacer(modifier = Modifier.height(4.dp))
 
-                Text(
-                    text = description,
-                    style = MaterialTheme.typography.bodyMedium,
-                    maxLines = 3
-                )
+                repository.description?.let {
+                    Text(
+                        text = it,
+                        style = MaterialTheme.typography.bodyMedium,
+                        maxLines = 3
+                    )
+                }
 
                 Spacer(modifier = Modifier.height(4.dp))
 
-                Text(
-                    text = language,
-                    style = MaterialTheme.typography.labelSmall
-                )
+                repository.language?.let {
+                    Text(
+                        text = it,
+                        style = MaterialTheme.typography.labelSmall
+                    )
+                }
             }
         }
     }
 }
 
-@Composable
-fun AsyncImage(
-    model: String,
-    contentDescription: String,
-    modifier: Modifier,
-    contentScale: ContentScale
-) {
-    TODO("Not yet implemented")
-}
-
 @Preview(showBackground = true)
+
 @Composable
+
 fun RepoItemPreview() {
-    RepoItem(
+
+    val repository = Repository (
+
+        id = "1",
+
         name = "Repo Name",
+
+        owner = GithubUser(
+
+            id = "1",
+
+            name = "Owner Name",
+
+            avatarUrl = "https://avatars.githubusercontent.com/u/168299135?v=4"
+
+        ),
+
         description = "Repo Description",
-        avatarImg = "https://avatars.githubusercontent.com/u/168299135?v=4",
+
         language = "Kotlin"
+
     )
+
+    RepoItem( repository )
+
 }
