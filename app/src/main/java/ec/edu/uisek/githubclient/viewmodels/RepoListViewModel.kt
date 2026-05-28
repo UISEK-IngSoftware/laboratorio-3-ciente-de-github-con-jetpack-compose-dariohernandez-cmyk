@@ -1,8 +1,9 @@
-package ec.edu.uisek.githubclient.ui.viewmodel
+package ec.edu.uisek.githubclient.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ec.edu.uisek.githubclient.models.Repository
+import ec.edu.uisek.githubclient.models.RepositoryPayload
 import ec.edu.uisek.githubclient.services.RetrofitClient
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -38,5 +39,35 @@ class RepoListViewModel : ViewModel() {
             }
         }
     }
-}
 
+    // Paso 4: Eliminar repositorio
+    fun deleteRepo(owner: String, repo: String) {
+        viewModelScope.launch {
+            _isLoading.value = true
+            try {
+                RetrofitClient.apiService.deleteRepository(owner, repo)
+                fetchRepos() // refresca la lista después de eliminar
+            } catch (e: Exception) {
+                _errorMsg.value = "Error al eliminar repositorio: ${e.localizedMessage}"
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
+
+    // Paso 4: Editar repositorio
+    fun updateRepo(owner: String, repo: String, name: String, description: String?) {
+        viewModelScope.launch {
+            _isLoading.value = true
+            try {
+                val payload = RepositoryPayload(name, description)
+                RetrofitClient.apiService.updateRepository(owner, repo, payload)
+                fetchRepos() // refresca la lista después de editar
+            } catch (e: Exception) {
+                _errorMsg.value = "Error al actualizar repositorio: ${e.localizedMessage}"
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
+}

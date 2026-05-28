@@ -7,11 +7,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.*
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
-import ec.edu.uisek.githubclient.ui.screens.RepoForm
 import ec.edu.uisek.githubclient.ui.screens.RepoList
 import ec.edu.uisek.githubclient.ui.theme.GithubClientTheme
-import ec.edu.uisek.githubclient.ui.viewmodel.RepoListViewModel
-
+import ec.edu.uisek.githubclient.viewmodels.RepoListViewModel
+import ec.edu.uisek.githubclient.ui.screens.RepoForm
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,14 +23,16 @@ class MainActivity : ComponentActivity() {
 
                 when (currentScreen) {
                     "repoList" -> RepoList(
-                        onNavigateToForm = { currentScreen = "repoForm" }
+                        onNavigateToForm = { currentScreen = "repoForm" },
+                        // Paso 6: conectar botones de edición y eliminación
+                        viewModel = listViewModel
                     )
 
                     "repoForm" -> RepoForm(
                         onBackClick = { currentScreen = "repoList" },
                         onSaveSuccess = {
-                            listViewModel.fetchRepos()
-                            currentScreen = "repoList"
+                            listViewModel.fetchRepos() // refresca la lista
+                            currentScreen = "repoList" // regresa a la lista
                         }
                     )
                 }

@@ -22,7 +22,7 @@ class RepoFormViewModel : ViewModel() {
     private val _isSuccess = MutableStateFlow(false)
     val isSuccess: StateFlow<Boolean> = _isSuccess.asStateFlow()
 
-    fun createRepo(name: String, description: String) {
+    fun createRepo(name: String, description: String?) {
         viewModelScope.launch {
             _isLoading.value = true
             _errorMsg.value = null
@@ -39,9 +39,9 @@ class RepoFormViewModel : ViewModel() {
                 _isLoading.value = false
             }
         }
-        fun resetSuccess() {
-            _isSuccess.value = false
-        }
+    }
 
+    fun resetSuccess() {
+        _isSuccess.value = false
     }
 }

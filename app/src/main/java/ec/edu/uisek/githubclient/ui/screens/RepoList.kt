@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ec.edu.uisek.githubclient.ui.components.RepoItem
 import ec.edu.uisek.githubclient.ui.theme.GithubClientTheme
-import ec.edu.uisek.githubclient.ui.viewmodel.RepoListViewModel
+import ec.edu.uisek.githubclient.viewmodels.RepoListViewModel
 
 @Composable
 fun RepoList(
@@ -41,7 +41,7 @@ fun RepoList(
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = "Agregar"
+                    contentDescription = "Nuevo repositorio"
                 )
             }
         }
